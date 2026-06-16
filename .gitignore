@@ -4,3 +4,9 @@ dist/
 logs/
 *.log
 .DS_Store
+
+# Test output — may contain live environment data
+device_details_reports/
+
+# Claude Code memory — contains local paths and internal context
+CLAUDE.md
