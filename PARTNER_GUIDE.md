@@ -54,28 +54,13 @@ Not sure? Check the URL bar when you log in to N-sight.
 
 ---
 
-## Choose Your Installation Method
+## Installation
 
-There are two ways to install N-sight AI Connect. Choose the one that suits your environment.
-
-### Option A: npm (Recommended)
-
-Requires Node.js and an internet connection. The server downloads and runs automatically — no manual file management.
-
-**Verify npm is available:**
-```
-npm --version
-```
-
-That's all the setup needed. The config snippets below use `npx` which handles the rest automatically.
-
-### Option B: GitHub Release (Manual Install)
-
-Use this if your environment restricts internet access during runtime, or if you prefer to manage files manually.
+Download and install N-sight AI Connect from the GitHub Releases page.
 
 **Steps:**
 
-1. Go to the [N-sight AI Connect Releases](https://github.com/HeadNerd-Jay/N-sight-MCP-Server/releases) page
+1. Go to the [N-sight AI Connect Releases](https://github.com/nable-opensource/N-sight-MCP-Server/releases) page
 2. Download the latest release zip: `nsight-mcp-server-vX.X.X.zip`
 3. Unzip it to a permanent location, for example:
    - **Windows:** `C:\Tools\nsight-mcp-server\`
@@ -85,7 +70,7 @@ Use this if your environment restricts internet access during runtime, or if you
    npm install --omit=dev
    ```
 
-Keep note of the full path to the `dist/` folder inside — you'll need it in the config steps below.
+Keep note of the full path to the `dist/` folder inside — you will need it in the config steps below.
 
 ---
 
@@ -100,25 +85,6 @@ Press `Win + R`, type `%APPDATA%\Claude\` and press Enter. Open `claude_desktop_
 Open Finder, press `Cmd + Shift + G`, paste `~/Library/Application Support/Claude/` and press Go. Open `claude_desktop_config.json`.
 
 ### Step 2: Add the configuration
-
-**Using npm (Option A):**
-
-```json
-{
-  "mcpServers": {
-    "nsight": {
-      "command": "npx",
-      "args": ["nsight-mcp-readonly"],
-      "env": {
-        "NSIGHT_API_KEY": "your_api_key_here",
-        "NSIGHT_SERVER_URL": "https://www.systemmonitor.us"
-      }
-    }
-  }
-}
-```
-
-**Using manual install (Option B):**
 
 ```json
 {
@@ -170,19 +136,6 @@ ChatGPT configures MCP connections through its web settings rather than a local 
 1. Click **Add connector** or **Add MCP server**
 2. Fill in the fields:
 
-**Using npm (Option A):**
-
-| Field | Value |
-|---|---|
-| Name | `N-sight AI Connect` |
-| Transport | `stdio` |
-| Command | `npx` |
-| Arguments | `nsight-mcp-readonly` |
-| NSIGHT_API_KEY | your API key |
-| NSIGHT_SERVER_URL | your regional URL |
-
-**Using manual install (Option B):**
-
 | Field | Value |
 |---|---|
 | Name | `N-sight AI Connect` |
@@ -226,20 +179,6 @@ Follow the prompts to enter the command, arguments, and environment variables.
 
 Open `~/.codex/config.toml` (create it if it doesn't exist) and add:
 
-**Using npm (Option A):**
-
-```toml
-[mcp_servers.nsight]
-command = "npx"
-args = ["nsight-mcp-readonly"]
-
-[mcp_servers.nsight.env]
-NSIGHT_API_KEY = "your_api_key_here"
-NSIGHT_SERVER_URL = "https://www.systemmonitor.us"
-```
-
-**Using manual install (Option B):**
-
 ```toml
 [mcp_servers.nsight]
 command = "node"
@@ -272,18 +211,6 @@ In [Copilot Studio](https://copilotstudio.microsoft.com), open the agent you wan
 
 ### Step 3: Configure the connection
 
-**Using npm (Option A):**
-
-| Field | Value |
-|---|---|
-| Server type | `stdio` |
-| Command | `npx` |
-| Arguments | `nsight-mcp-readonly` |
-| NSIGHT_API_KEY | your API key |
-| NSIGHT_SERVER_URL | your regional URL |
-
-**Using manual install (Option B):**
-
 | Field | Value |
 |---|---|
 | Server type | `stdio` |
@@ -309,10 +236,7 @@ The **Production** server adds 13 remediation actions: clearing checks, approvin
 
 ### Adding the Production server
 
-The Production server runs alongside the Read-Only server. Add a second entry to your config using the same steps above, replacing:
-
-- `nsight-mcp-readonly` with `nsight-mcp-production` (npm)
-- `readonly-server.js` with `production-server.js` (manual)
+The Production server runs alongside the Read-Only server. Add a second entry to your config using the same steps above, replacing `readonly-server.js` with `production-server.js`.
 
 Add these additional environment variables:
 
@@ -322,22 +246,22 @@ Add these additional environment variables:
 | `NSIGHT_AUDIT_LOG_ENABLED` | `true` | Record all actions to a log file |
 | `NSIGHT_AUDIT_LOG_PATH` | `C:\Logs\nsight-audit.log` | Where to write the audit log |
 
-**Example for Claude Desktop (npm):**
+**Example for Claude Desktop:**
 
 ```json
 {
   "mcpServers": {
     "nsight": {
-      "command": "npx",
-      "args": ["nsight-mcp-readonly"],
+      "command": "node",
+      "args": ["C:\\Tools\\nsight-mcp-server\\dist\\readonly-server.js"],
       "env": {
         "NSIGHT_API_KEY": "your_api_key_here",
         "NSIGHT_SERVER_URL": "https://www.systemmonitor.us"
       }
     },
     "nsight-production": {
-      "command": "npx",
-      "args": ["nsight-mcp-production"],
+      "command": "node",
+      "args": ["C:\\Tools\\nsight-mcp-server\\dist\\production-server.js"],
       "env": {
         "NSIGHT_API_KEY": "your_api_key_here",
         "NSIGHT_SERVER_URL": "https://www.systemmonitor.us",
@@ -509,10 +433,6 @@ N-sight allows 60 API calls per minute. The server queues and throttles automati
 ### "The Production server isn't appearing separately"
 
 Check that the two servers have different keys in your config (`"nsight"` and `"nsight-production"`). If they share the same key, one overwrites the other.
-
-### "npx is slow on first run"
-
-The first `npx` call downloads the package. Subsequent calls use the cached version and start in under a second.
 
 ---
 

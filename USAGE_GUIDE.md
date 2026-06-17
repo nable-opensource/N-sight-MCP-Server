@@ -88,7 +88,7 @@ If the file doesn't exist yet, create it as a new text file with that exact name
 
 ### Step 2: Add the server configuration
 
-Paste the following into the file, replacing the placeholder values with your actual API key and server URL:
+Paste the following into the file, replacing the placeholder values with your actual API key and server URL. Update the path to match where you extracted the server files.
 
 **Read-Only server (recommended starting point):**
 
@@ -96,8 +96,8 @@ Paste the following into the file, replacing the placeholder values with your ac
 {
   "mcpServers": {
     "nsight": {
-      "command": "npx",
-      "args": ["nsight-mcp-server", "readonly"],
+      "command": "node",
+      "args": ["C:\\Tools\\nsight-mcp-server\\dist\\readonly-server.js"],
       "env": {
         "NSIGHT_API_KEY": "paste-your-api-key-here",
         "NSIGHT_SERVER_URL": "https://www.systemmonitor.us"
@@ -106,6 +106,8 @@ Paste the following into the file, replacing the placeholder values with your ac
   }
 }
 ```
+
+> On Mac, use forward slashes: `"/Users/yourname/Tools/nsight-mcp-server/dist/readonly-server.js"`
 
 **If you already have other MCP servers configured**, add the `nsight` block inside the existing `mcpServers` section — don't replace the whole file.
 
@@ -140,8 +142,8 @@ In Copilot Studio, open the agent you want to connect to N-sight (or create a ne
 ### Step 3: Configure the connection
 
 - **Server type:** stdio
-- **Command:** `npx`
-- **Arguments:** `nsight-mcp-server readonly` (or `production` for the Production server)
+- **Command:** `node`
+- **Arguments:** full path to `dist/readonly-server.js` (or `dist/production-server.js` for the Production server)
 - **Environment variables:**
   - `NSIGHT_API_KEY` = your API key
   - `NSIGHT_SERVER_URL` = your regional URL
@@ -293,16 +295,16 @@ Add a second entry to your `claude_desktop_config.json` alongside the read-only 
 {
   "mcpServers": {
     "nsight": {
-      "command": "npx",
-      "args": ["nsight-mcp-server", "readonly"],
+      "command": "node",
+      "args": ["C:\\Tools\\nsight-mcp-server\\dist\\readonly-server.js"],
       "env": {
         "NSIGHT_API_KEY": "paste-your-api-key-here",
         "NSIGHT_SERVER_URL": "https://www.systemmonitor.us"
       }
     },
     "nsight-production": {
-      "command": "npx",
-      "args": ["nsight-mcp-server", "production"],
+      "command": "node",
+      "args": ["C:\\Tools\\nsight-mcp-server\\dist\\production-server.js"],
       "env": {
         "NSIGHT_API_KEY": "paste-your-api-key-here",
         "NSIGHT_SERVER_URL": "https://www.systemmonitor.us",
@@ -364,7 +366,7 @@ This log is append-only — entries are never modified or deleted. If an API cal
 
 **The AI cannot take actions you haven't confirmed.** Every write operation returns a preview first. Nothing changes in your N-sight environment until you explicitly approve it.
 
-**Scope your API key to a specific client group** if you want to limit the server to a subset of your managed clients. Set `NSIGHT_CLIENT_ID` in your config to the client ID you want to restrict to.
+**Scope your access to a specific client group** by setting `NSIGHT_CLIENT_ID` in your config to restrict the server to that client's data. Note: N-sight API keys inherit the full permissions of the user account that created them and cannot be scoped to read-only at the key level. Use the Read-Only server to prevent write access at the MCP layer.
 
 ---
 

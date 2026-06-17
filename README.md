@@ -12,9 +12,9 @@ N-sight AI Connect is an MCP server that gives your AI assistant direct, read-on
 Examples of what you can ask:
 
 - "Which of my clients have failing checks right now?"
-- "Show me the hardware details for CSP-0009 at Company 1."
-- "What software is installed on AM4-MacOSx-Sequoia at Kelltic Cider?"
-- "Give me an environment summary for Kelltic Cider Company."
+- "Show me the hardware details for a device at one of my clients."
+- "What software is installed on a specific workstation?"
+- "Give me an environment summary for one of my clients."
 
 ---
 
@@ -71,7 +71,7 @@ choco install nodejs
 Clone the repo or download the release package:
 
 ```powershell
-git clone https://github.com/HeadNerd-Jay/N-sight-MCP-Server.git
+git clone https://github.com/nable-opensource/N-sight-MCP-Server.git
 cd N-sight-MCP-Server
 ```
 
